@@ -11,13 +11,11 @@ class CSharpBackend(settings: BackendSettings) : Backend(settings) {
     private var writer: FileWriter? = null
 
     override fun prepare() {
-        val serializeCode = this.loadResource("csharp/Serialize.cs")
-        val serializeFile = Paths.get(settings.outputDirectory, "Serialize.cs").toFile()
-        serializeCode!!.transferTo(serializeFile.outputStream())
+        this.loadResource("csharp/Serialize.cs")!!
+            .copyToFile(settings.outputDirectory, "Serialize.cs")
 
-        val deserializeCode = this.loadResource("csharp/Deserialize.cs")
-        val deserializeFile = Paths.get(settings.outputDirectory, "Deserialize.cs").toFile()
-        deserializeCode!!.transferTo(deserializeFile.outputStream())
+        this.loadResource("csharp/Deserialize.cs")!!
+            .copyToFile(settings.outputDirectory, "Deserialize.cs")
     }
 
     override fun compileMessage(msg: Message, serialize: List<Instr>, deserialize: List<Instr>) {
