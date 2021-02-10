@@ -5,7 +5,7 @@ import java.io.InputStream
 import java.io.OutputStream
 
 class Resource internal constructor(val stream: InputStream) {
-    fun transferTo(out: OutputStream): Long = stream.transferTo(out) ?: 0
+    fun transferTo(out: OutputStream): Long = stream.transferTo(out)
 
     fun copyToFile(path: String) = transferTo(File(path).outputStream())
     fun copyToFile(parent: String, child: String) = transferTo(File(parent, child).outputStream())

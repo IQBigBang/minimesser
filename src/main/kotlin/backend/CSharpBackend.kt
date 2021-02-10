@@ -30,11 +30,27 @@ class CSharpBackend(settings: BackendSettings) : Backend(settings) {
         writeln("") // a newline
 
         // start the class
-        writeln("class ${msg.name}Message : Serialize, Deserialize {")
+        writeln("public class ${msg.name}Message : Serialize, Deserialize {")
         // emit the fields
         for (f in msg.fields) {
             writeln("public ${typeToString(f.type)} ${f.name};")
         }
+
+        // emit the constructors
+        writeln("public ${msg.name}Message() {}") // an empty one
+
+        write("public ${msg.name}Message(")
+        for (i in msg.fields.indices) { // arguments
+            val f = msg.fields[i]
+            write("${typeToString(f.type)} ${f.name}")
+            if (i != msg.fields.size - 1)
+                write(", ")
+        }
+        writeln(") {")
+        for (f in msg.fields) { // initialization
+            writeln("this.${f.name} = ${f.name};")
+        }
+        writeln("}")
 
         // emit the serialize and deserialize functions
         writeln("public void SerializeInto(Span<byte> _mem) {")
