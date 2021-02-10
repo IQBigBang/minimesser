@@ -67,13 +67,13 @@ class CSharpBackend(settings: BackendSettings) : Backend(settings) {
                 is Instr.DeserializePrim -> {
                     val fieldName = i.fieldName
                     val typeName = typeToString(i.type)
-                    writeln("$fieldName = *($typeName*)(p + $pos);")
+                    writeln("$fieldName = *($typeName*)(_p + $pos);")
                     pos += i.type.getSize()
                 }
                 is Instr.SerializePrim -> {
                     val fieldName = i.fieldName
                     val typeName = typeToString(i.type)
-                    writeln("*($typeName*)(p + $pos) = $fieldName;")
+                    writeln("*($typeName*)(_p + $pos) = $fieldName;")
                     pos += i.type.getSize()
                 }
                 is Instr.SkipPadding -> {
